@@ -1,5 +1,5 @@
 SELECT DATE_TRUNC(order_created_at, DAY) AS reporting_date,
-    mapping.account_manager,
+    mapping.account_manager as account_manager_name,
     mapping.state,
     COUNT(DISTINCT order_id) AS total_orders,
     AVG(total_distinct_items) AS average_total_distinct_items,
@@ -8,5 +8,5 @@ SELECT DATE_TRUNC(order_created_at, DAY) AS reporting_date,
 FROM {{ ref('int_sales_database__order') }} AS orders
 LEFT JOIN {{ ref('stg_google_sheets__account_manager_region_mapping') }} as mapping ON orders.user_state = mapping.state
 GROUP BY reporting_date,
-    account_manager,
+    account_manager_name,
     state
